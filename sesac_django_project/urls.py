@@ -15,8 +15,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+
+import blog
+
+# http://127.0.0.1:8000/   이것 이후에[ 쓰는것
+#http://127.0.0.1:8000/admin -> admin -> site-> urls
+#http://127.0.0.1:8000/blog/ -> 담당하는 곳으로 보내라
+#http://127.0.0.1:8000/ -> single_pages의 urls.py 곳으로 보내라
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('blog/', include('blog.urls')),
+    path('', include('single_pages.urls')),
+
 ]

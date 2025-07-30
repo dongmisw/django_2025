@@ -22,3 +22,32 @@ db.sqlite3
 git add .
 git commit -m "장고프로젝트생성"
 git push
+
+
+
+
+
+1. blog application 생성
+- 글 : model : Post
+- 글 리스트, 글 개별 페이지
+2. library application 생성
+- 책: Book
+- 책 리스트, 책 개별 페이지
+3. shopping mall application 생성
+- 상품: Product
+- 상품 리스트, 상품 개별 페이지
+
+새로운 application을 생성한다.
+1. library, shopping mall
+2. 동일한 작업 진행
+
+
+application에는 기본 생성이 안되어 있음.
+blog/urls.py 생성
+
+
+
+
+
+
+

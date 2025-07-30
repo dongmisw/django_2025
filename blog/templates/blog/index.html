@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog</title>
+</head>
+<body>
+    templates/blog/index.html
+    Blog - 전체글 리스트입니다.
+    posts - 여러개의 글 리스트
+    for  post in posts
+        print(post)
+    {% for post in posts %}
+        <h1>{{ post }} </h1>
+
+        <h3>제목: {{ post.title }} </h3>
+        <h3>내용: {{ post.content }} </h3>
+        <h3>생성일: {{ post.created_date }} </h3>
+        <hr>
+    {% endfor %}
+
+</body>
+</html>

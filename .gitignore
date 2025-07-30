@@ -208,4 +208,5 @@ __marimo__/
 
 db.sqlite3
 .venv/
+.idea/
 guide.txt
