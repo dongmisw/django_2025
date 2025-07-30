@@ -1,0 +1,8 @@
+
+django-admin startproject 프로젝트명 .
+#장고 서버 실행
+python manage.py runserver
+# 장고 서버 data migration
+python manage.py migrate
+# super user 생성
+python manage.py createsuperuser
