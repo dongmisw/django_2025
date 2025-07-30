@@ -1,8 +1,24 @@
-
+1) 가상환경 실행
+.venv/Script/activate.bat
+pip install django
+2) 프로젝트 생성
 django-admin startproject 프로젝트명 .
-#장고 서버 실행
+3) 장고 서버 실행 (django_2025 디렉토리 밑에서)
 python manage.py runserver
-# 장고 서버 data migration
+http://127.0.0.1:8000 확인
+장고서버 종료 - cmder에서 ctrl+c
+4) 장고 서버 data migration
 python manage.py migrate
-# super user 생성
+5) super user 생성 - admin 페이지
 python manage.py createsuperuser
+5.1 ) 서버 실행
+python manage.py runserver
+http://127.0.0.1:8000/admin/
+6) .gitignore에 올리지 않을것 적기
+.venv/
+.idea/
+db.sqlite3
+7) git
+git add .
+git commit -m "장고프로젝트생성"
+git push
