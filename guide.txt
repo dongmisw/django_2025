@@ -46,7 +46,8 @@ application에는 기본 생성이 안되어 있음.
 blog/urls.py 생성
 
 
-
+start bootstrap - templates - blog
+blog home , blog post
 
 
 

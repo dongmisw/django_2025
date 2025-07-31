@@ -5,7 +5,7 @@ from .models import Post
 #함수 생성
 def index(request):
     #db에서 query - select * from post
-    posts1111 = Post.objects.all()
+    posts1111 = Post.objects.all().order_by('-pk')
     return render(request,
                   'blog/index.html',
                   context={'posts':posts1111}
