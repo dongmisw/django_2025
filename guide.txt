@@ -50,5 +50,16 @@ start bootstrap - templates - blog
 blog home , blog post
 
 
+https://github.com/dongmisw/django_2025
 
-
+<blog>
+http://127.0.0.1:8000/blog
+전체글 보기       /           views.index  ->  index.html
+상세글 보기       /{pk}       views.detail -> detail.html
+글 삭제하기
+글 수정하기
+글쓰기           /create  views.create  postform.html
+ ㄴ처음에 글쓰기를 누르면, 비어있는 form이 나옴
+ ㄴ제대로 안쓰면 다시 쓰라고 하면서 반쯤 채워져있는 form
+ ㄴ정상적으로 글을 다 쓰면 저장함
+   -> 전체 글 리스트로 넘어감

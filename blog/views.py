@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+
+from .forms import PostForm
 from .models import Post
 # Create your views here.
 
@@ -15,3 +17,30 @@ def detail(request, pk):
     return render(request,
                   'blog/detail.html',
                   context={'post2':post1111})
+#/blog/create/
+def create(request):
+    if request.method == "POST":
+        #작성하다가 제출 버튼을 누른경우
+        postform = PostForm(request.POST, request.FILES)
+        if postform.is_valid():
+            post1 = postform.save(commit=False)
+            post1.title = post1.title + "홍길동 만세"
+            post1.save()
+            return redirect('/blog/')
+            #정상값인 경우
+    else: # get
+        postform = PostForm()
+    return render(request,
+                  template_name='blog/postform.html',
+                  context={'postform':postform})
+
+#/blog/createfake/
+#글을 써보자
+def createfake(request):
+    post = Post()
+    post.title = " 새싹 용산구"
+    post.content="나진상가 3층"
+    post.save()
+    return redirect('index')
+
+
