@@ -20,6 +20,7 @@ def detail(request, pk):
 #/blog/create/
 def create(request):
     if request.method == "POST":
+        # form의 칸에 정보를 다 넣고, 제출 버튼을 누른경우.
         #작성하다가 제출 버튼을 누른경우
         postform = PostForm(request.POST, request.FILES)
         if postform.is_valid():
@@ -28,7 +29,7 @@ def create(request):
             post1.save()
             return redirect('/blog/')
             #정상값인 경우
-    else: # get
+    else: # get , 새글작성하기 버튼을 눌러서 create()함수로 들어온 경우
         postform = PostForm()
     return render(request,
                   template_name='blog/postform.html',

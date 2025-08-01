@@ -1,170 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Blog</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid container">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link active"
-                 aria-current="page"
-                 href="/">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/blog/">Blog</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/about_me/">Aboutme</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Dropdown link
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-            </li>
-          </ul>
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#"
-                            data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Login
-                    </a>
-                </li>
-            </ul>
+{% extends 'blog/base.html' %}
+{% block main-area %}
+    {% for post in posts %}
+    <!-- Featured blog post-->
+    <div class="card mb-4">
+        {% if post.uploaded_image %}
+            <a href="#!"><img class="card-img-top" src={{ post.uploaded_image.url }} alt="..." /></a>
+        {% else %}
+            <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" alt="..." /></a>
+        {% endif %}
+        <div class="card-body">
+            <div class="small text-muted">{{ post.created_date }}</div>
+            <h2 class="card-title">{{ post.title }}</h2>
+            <p class="card-text"> {{ post.content }}</p>
+            <a class="btn btn-primary" href={{ post.get_absolute_url }}>Read more →</a>
         </div>
-      </div>
-    </nav>
-       <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">로그인하세요.</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            로그인 얼른 하세요.
-
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Login</button>
-          </div>
-        </div>
-      </div>
     </div>
+    {% endfor %}
+    <!-- Nested row for non-featured blog posts-->
 
-        <!-- Page header with logo and tagline-->
-        <header class="py-5 bg-light border-bottom mb-4">
-            <div class="container">
-                <div class="text-center my-5">
-                    <h1 class="fw-bolder">Welcome to Blog Home!</h1>
-                    <p class="lead mb-0">A Bootstrap 5 starter layout for your next blog homepage</p>
-                </div>
-            </div>
-        </header>
-        <!-- Page content-->
-        <div class="container">
-            <div class="row">
-                <!-- Blog entries-->
-                <div class="col-lg-8">
-                    {% for post in posts %}
-                    <!-- Featured blog post-->
-                    <div class="card mb-4">
-                        {% if post.uploaded_image %}
-                            <a href="#!"><img class="card-img-top" src={{ post.uploaded_image.url }} alt="..." /></a>
-                        {% else %}
-                            <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                        {% endif %}
-                        <div class="card-body">
-                            <div class="small text-muted">{{ post.created_date }}</div>
-                            <h2 class="card-title">{{ post.title }}</h2>
-                            <p class="card-text"> {{ post.content }}</p>
-                            <a class="btn btn-primary" href={{ post.get_absolute_url }}>Read more →</a>
-                        </div>
-                    </div>
-                    {% endfor %}
-                    <!-- Nested row for non-featured blog posts-->
+    <!-- Pagination-->
+    <nav aria-label="Pagination">
+        <hr class="my-0" />
+        <ul class="pagination justify-content-center my-4">
+            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
+            <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
+            <li class="page-item"><a class="page-link" href="#!">2</a></li>
+            <li class="page-item"><a class="page-link" href="#!">3</a></li>
+            <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
+            <li class="page-item"><a class="page-link" href="#!">15</a></li>
+            <li class="page-item"><a class="page-link" href="#!">Older</a></li>
+        </ul>
+    </nav>
+{% endblock %}
 
-                    <!-- Pagination-->
-                    <nav aria-label="Pagination">
-                        <hr class="my-0" />
-                        <ul class="pagination justify-content-center my-4">
-                            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
-                            <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                            <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">15</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">Older</a></li>
-                        </ul>
-                    </nav>
-                </div>
-                <!-- Side widgets-->
-                <div class="col-lg-4">
-                    <!-- Search widget-->
-                    <div class="card mb-4">
-                        <button>
-                            <a href="/blog/create/">글쓰기</a>
-                        </button>
-                        <div class="card-header">Search</div>
-                        <div class="card-body">
-                            <div class="input-group">
-                                <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-                                <button class="btn btn-primary" id="button-search" type="button">Go!</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Categories widget-->
-                    <div class="card mb-4">
-                        <div class="card-header">Categories</div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <ul class="list-unstyled mb-0">
-                                        <li><a href="#!">Web Design</a></li>
-                                        <li><a href="#!">HTML</a></li>
-                                        <li><a href="#!">Freebies</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-sm-6">
-                                    <ul class="list-unstyled mb-0">
-                                        <li><a href="#!">JavaScript</a></li>
-                                        <li><a href="#!">CSS</a></li>
-                                        <li><a href="#!">Tutorials</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Side widget-->
-                    <div class="card mb-4">
-                        <div class="card-header">Side Widget</div>
-                        <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Footer-->
-        <footer class="py-5 bg-dark">
-            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
-        </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-
-</body>
-</html>
+{% block header %}
+    <h1 class="fw-bolder">Welcome to Blog Home!</h1>
+    <p class="lead mb-0">A Bootstrap 5 starter layout for your next blog homepage</p>
+{% endblock %}

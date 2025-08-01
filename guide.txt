@@ -54,12 +54,52 @@ https://github.com/dongmisw/django_2025
 
 <blog>
 http://127.0.0.1:8000/blog
-전체글 보기       /           views.index  ->  index.html
-상세글 보기       /{pk}       views.detail -> detail.html
-글 삭제하기
-글 수정하기
-글쓰기           /create  views.create  postform.html
+전체글 보기     GET   /           views.index  ->  index.html
+상세글 보기     GET   /{pk}       views.detail -> detail.html
+글쓰기          GET   /create      views.create -> postform.html
+                                    완전히 칸이 비어있는 작성화면
+글쓰기          제출(form 정보를 장고 서버로 보냄)
+               POST  /create      views.create
+               1) 정상 제출인 경우    database저장 -> 게시판 리스트 redirect
+               2) valid하지 않은 경우() -> 다시써. -> postform.html
+
  ㄴ처음에 글쓰기를 누르면, 비어있는 form이 나옴
  ㄴ제대로 안쓰면 다시 쓰라고 하면서 반쯤 채워져있는 form
  ㄴ정상적으로 글을 다 쓰면 저장함
    -> 전체 글 리스트로 넘어감
+
+
+
+
+
+template 문법
+0) views의 함수가 넘겨준 context 변수 활용
+{{ post }}
+
+1) {% load static %}
+
+2)for 문
+{% for post in posts %}
+    작업
+{% endfor %}
+
+3) if/else 문
+{% if 조건 %}
+{% else %}
+{% endif %}
+
+4) url
+{% url 'bloglist' %}
+path('/blog/',
+     template_name='blog/index.html',
+     name = 'bloglist')
+
+5) 다른 html에서 확장하기
+{% extends 'blog/base.html' %}
+ -> {% block main-area %}
+6) block 대체
+{% block main-area %}
+,,,,,,
+{% endblock %}
+7) 다른 html 포함하기
+{% include 'blog/footer.html' %}
