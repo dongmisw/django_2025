@@ -6,8 +6,11 @@ class Category(models.Model):
     slug = models.SlugField(max_length=100,
                             unique=True,
                             allow_unicode=True)
+    def get_url(self):
+        return f'/blog/category/{self.slug}/'
     def __str__(self):
         return f'{self.name}----{self.slug}'
+
 
 
 

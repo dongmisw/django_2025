@@ -17,6 +17,19 @@ def index(request):
                            'categories' :categories
                            }
                  )
+#/blog/category/<str:slug>/
+def category(request, slug):
+    #category list를 다 줘
+    categories = Category.objects.all()
+    category = Category.objects.get(slug=slug)
+    posts= Post.objects.filter(category=category)
+    return render(request,
+                  template_name='blog/index.html',
+                  context={'posts': posts,
+                           'categories': categories
+                           }
+                  )
+
 def detail(request, pk):
     post = Post.objects.get(pk=pk)
     categories = Category.objects.all()
@@ -27,6 +40,8 @@ def detail(request, pk):
                            })
 #/blog/create/
 def create(request):
+
+    categories = Category.objects.all()
     if request.method == "POST":
         # form의 칸에 정보를 다 넣고, 제출 버튼을 누른경우.
         #작성하다가 제출 버튼을 누른경우
@@ -41,7 +56,9 @@ def create(request):
         postform = PostForm()
     return render(request,
                   template_name='blog/postform.html',
-                  context={'postform':postform})
+                  context={'postform':postform,
+                           'categories':categories}
+                  )
 
 #/blog/createfake/
 #글을 써보자

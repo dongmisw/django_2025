@@ -54,9 +54,10 @@ https://github.com/dongmisw/django_2025
 
 <blog>
 http://127.0.0.1:8000/blog
-전체글 보기     GET   /           views.index  ->  index.html
-상세글 보기     GET   /{pk}       views.detail -> detail.html
-글쓰기          GET   /create      views.create -> postform.html
+카테고리별리스트 GET   /blog/category/<str:slug>  ->views.category  ->index.html
+전체글 보기     GET   /blog/           views.index  ->  index.html
+상세글 보기     GET   /blog/{pk}       views.detail -> detail.html
+글쓰기          GET   /blog/create      views.create -> postform.html
                                     완전히 칸이 비어있는 작성화면
 글쓰기          제출(form 정보를 장고 서버로 보냄)
                POST  /create      views.create
