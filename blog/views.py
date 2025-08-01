@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
+from django.views.generic import DetailView, ListView,CreateView,UpdateView,DeleteView
 
 from .forms import PostForm
 from .models import Post, Category
-
 
 # Create your views here.
 
@@ -18,11 +18,15 @@ def index(request):
                            }
                  )
 #/blog/category/<str:slug>/
+#/blog/category/no_category
 def category(request, slug):
-    #category list를 다 줘
     categories = Category.objects.all()
-    category = Category.objects.get(slug=slug)
-    posts= Post.objects.filter(category=category)
+    if slug=='no_category':
+        #미분류인경우ㅠ
+        posts= Post.objects.filter(category=None)
+    else: # 맛집, 용산구
+        category = Category.objects.get(slug=slug)
+        posts= Post.objects.filter(category=category)
     return render(request,
                   template_name='blog/index.html',
                   context={'posts': posts,
