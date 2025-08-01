@@ -5,18 +5,26 @@
         <!-- Post header-->
         <header class="mb-4">
             <!-- Post title-->
-            <h1 class="fw-bolder mb-1"> {{ post2.title }}</h1>
+            <h1 class="fw-bolder mb-1"> {{ post.title }}</h1>
             <!-- Post meta content-->
-            <div class="text-muted fst-italic mb-2">Posted on {{ post2.created_date}} by Start Bootstrap</div>
+            <div class="text-muted fst-italic mb-2">Posted on {{ post.created_date}} by {{ post.author }}</div>
             <!-- Post categories-->
-            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
-            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
+            <!-- 카테고리는 있기도 하고, 없기도 한다. -->
+            {%  if post.category %}
+                <a class="badge bg-secondary text-decoration-none link-light" href="#!">
+                    {{ post.category.name }}
+                </a>
+            {% else %}
+                <a class="badge bg-secondary text-decoration-none link-light" href="#!">
+                   미분류
+                </a>
+            {% endif %}
         </header>
         <!-- Preview image figure-->
         <figure class="mb-4">
-            {% if post2.uploaded_image %}
+            {% if post.uploaded_image %}
                 <img class="img-fluid rounded"
-                 src={{ post2.uploaded_image.url }} alt="..." />
+                 src={{ post.uploaded_image.url }} alt="..." />
             {% else %}
                 <img class="img-fluid rounded"
                  src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" alt="..." />
@@ -24,12 +32,13 @@
         </figure>
         <!-- Post content-->
         <section class="mb-5">
-             <p class="fs-5 mb-4"> {{ post2.content}}</p>
+             <p class="fs-5 mb-4"> {{ post.content}}</p>
         </section>
-        {% if post2.uploaded_file %}
-            <a href={{ post2.uploaded_file.url }}><h3>Download</h3></a>
+        {% if post.uploaded_file %}
+            <a href={{ post.uploaded_file.url }}><h3>Download</h3></a>
         {% endif %}
     </article>
+
     <!-- Comments section-->
     <section class="mb-5">
         <div class="card bg-light">

@@ -1,22 +1,30 @@
 from django.shortcuts import render, redirect
 
 from .forms import PostForm
-from .models import Post
+from .models import Post, Category
+
+
 # Create your views here.
 
 #함수 생성
 def index(request):
     #db에서 query - select * from post
     posts1111 = Post.objects.all().order_by('-pk')
+    categories = Category.objects.all()
     return render(request,
                   'blog/index.html',
-                  context={'posts':posts1111}
+                  context={'posts' : posts1111,
+                           'categories' :categories
+                           }
                  )
 def detail(request, pk):
-    post1111 = Post.objects.get(pk=pk)
+    post = Post.objects.get(pk=pk)
+    categories = Category.objects.all()
     return render(request,
                   'blog/detail.html',
-                  context={'post2':post1111})
+                  context={'post':post,
+                           'categories':categories
+                           })
 #/blog/create/
 def create(request):
     if request.method == "POST":

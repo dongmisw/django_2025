@@ -11,6 +11,12 @@
         <div class="card-body">
             <div class="small text-muted">{{ post.created_date }}</div>
             <h2 class="card-title">{{ post.title }}</h2>
+            <h5 class="card-title">글쓴이 : {{ post.author }}</h5>
+            {% if post.category %}
+                <h5 class="card-title">카테고리 : {{ post.category.name }}</h5>
+            {% else %}
+                <h5 class="card-title">카테고리 : 미분류 </h5>
+            {% endif %}
             <p class="card-text"> {{ post.content }}</p>
             <a class="btn btn-primary" href={{ post.get_absolute_url }}>Read more →</a>
         </div>
