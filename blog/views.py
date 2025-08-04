@@ -73,4 +73,24 @@ def createfake(request):
     post.save()
     return redirect('index')
 
+#/blog/<int:pk>/delete
+def delete(request,pk):
+    post = Post.objects.get(pk=pk)
+    post.delete()
+    return redirect('index')
+#/blog/<int:pk>/update  -> pk는 post.pk
+def update(request,pk):
+    post = Post.objects.get(pk=pk)
+    if request.method == "POST":
+        postform = PostForm(request.POST, request.FILES, instance=post)
+        if postform.is_valid():
+            postform.save()
+            return redirect('/blog/')
+    else:
+        postform = PostForm(instance=post)
+    return render(request,
+                  template_name='blog/postupdateform.html',
+                  context={'postform':postform,}
+                  )
+
 

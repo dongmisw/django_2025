@@ -8,4 +8,8 @@ urlpatterns=[
     path('create/', views.create , name='blogcreate'),
     #path('create/', views.create , name='blogcreate'),
     path('createfake/', views.createfake),
+    path('<int:pk>/delete/',
+         views.delete, name='blogdelete'),
+    path('<int:pk>/update/',
+         views.update , name='blogupdate'),
 ]

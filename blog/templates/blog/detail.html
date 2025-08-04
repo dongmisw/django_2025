@@ -19,6 +19,13 @@
                    미분류
                 </a>
             {% endif %}
+            <a class="btn btn-primary " href="/blog/{{ post.pk }}/delete/">
+                글지우기
+            </a>
+            <a class="btn btn-success "
+               href="/blog/{{ post.pk }}/update/">
+                글수정하기
+            </a>
         </header>
         <!-- Preview image figure-->
         <figure class="mb-4">

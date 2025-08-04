@@ -56,11 +56,16 @@ https://github.com/dongmisw/django_2025
 http://127.0.0.1:8000/blog
 카테고리별리스트 GET   /blog/category/<str:slug>  ->views.category  ->index.html
 전체글 보기     GET   /blog/           views.index  ->  index.html
-상세글 보기     GET   /blog/{pk}       views.detail -> detail.html
+상세글 보기     GET   /blog/{pk}/       views.detail -> detail.html
+글 삭제하기     GET   /blog/{pk}/delete/  views.delete ->글목록
+글 업데이트     GET   /blog/{pk}/update/   views.update -> postupdateform.html
+               POST  /blog/{pk}/update/   views.update
+                1) 정상 -> database 저장  -> redirect 전체글리스트
+                2) 비정상 -> 다시써.       -> postupdateform.html
 글쓰기          GET   /blog/create      views.create -> postform.html
                                     완전히 칸이 비어있는 작성화면
 글쓰기          제출(form 정보를 장고 서버로 보냄)
-               POST  /create      views.create
+               POST  blog/create      views.create
                1) 정상 제출인 경우    database저장 -> 게시판 리스트 redirect
                2) valid하지 않은 경우() -> 다시써. -> postform.html
 
@@ -129,5 +134,36 @@ post.save()
 1. 조건으로 찾아온다. ->
 2. 해당하는 content를 수정
 3. save
+
+
+comment에 대한 crud
+1. urls 작성할지 고민
+기능              method  urls            처리 함수       template이름
+댓글 리스트보기     GET    /blog/{post.pk}  views.detail   blog/detail.html
+                context에 댓글 전체 리스트를 담아서 template으로 보낸다.
+
+댓글 작성하기     POST /blog/{post.pk}/createcomment/ views.createcomment
+                                                 redirect(/blog/{post.pk})
+
+댓글 수정하기     GET (수정하기버튼)
+                        /blog/{comment.pk}/updatecomment/   views.updatecomment
+                                                blog/comment_update_form.html
+                POST (다 수정한 후에 또 제출하기 버튼)
+                1) 정상 valid     save해라.     redirect(/blog/{post.pk})
+                2) 비정상 valid 안한 경우
+                                  다시써.         return render(request,
+                                                 template_name=blog/comment_update_form.html,
+                                                 context={'form':form})
+댓글 삭제하기     GET /blog/{comment.pk}/deletecomment
+                    view.deletecomment
+                        redirect(/blog/{post.pk})
+
+
+
+
+
+
+
+
 
 
