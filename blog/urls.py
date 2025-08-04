@@ -12,4 +12,5 @@ urlpatterns=[
          views.delete, name='blogdelete'),
     path('<int:pk>/update/',
          views.update , name='blogupdate'),
+    path('tag/<slug>/',views.tag,name='tag'),
 ]

@@ -159,6 +159,28 @@ comment에 대한 crud
                         redirect(/blog/{post.pk})
 
 
+one-to-many 관계
+
+class Comment - author, post 변수
+class Post - comment 변수 없음
+{% if post.comment_set.exist %}
+    이 post에 연결된 comment가 있다.
+{% else %}
+    이 post에 연결된 comment가 없다.
+{% endif %}
+
+{% for comment in post.comment_set.all %}
+    {{comment.content}}
+{% endfor %}
+
+
+
+many-to-many 관계
+{% for tag in post.tags.all %}
+    tag-name : {{ tag.name }}
+{% endfor %}
+
+
 
 
 

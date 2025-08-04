@@ -1,6 +1,15 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+class Tag(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100,
+                            unique=True,
+                            allow_unicode=True)
+    def get_absolute_url(self):
+        return f'/blog/tag/{self.slug}/'
+    def __str__(self):
+        return f'{self.name}----{self.slug}'
 class Category(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100,
@@ -21,6 +30,7 @@ class Post(models.Model):
                                  on_delete=models.SET_NULL,
                                  null=True,
                                  blank=True)
+    tags = models.ManyToManyField(Tag, blank=True)
     created_date = models.DateTimeField(auto_now_add=True,
                                         null=True)
     updated_date = models.DateTimeField(auto_now=True,

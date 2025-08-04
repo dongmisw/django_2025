@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.views.generic import DetailView, ListView,CreateView,UpdateView,DeleteView
 
 from .forms import PostForm
-from .models import Post, Category
+from .models import Post, Category, Tag
+
 
 # Create your views here.
 
@@ -92,5 +93,12 @@ def update(request,pk):
                   template_name='blog/postupdateform.html',
                   context={'postform':postform,}
                   )
-
+def tag(request,slug):
+    tag = Tag.objects.get(slug=slug)
+    posts = Post.objects.filter(tags=tag)
+    categories = Category.objects.all()
+    return render(request,
+                  'blog/index.html',
+                  context={'posts':posts,
+                           'categories':categories})
 
