@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic import DetailView, ListView,CreateView,UpdateView,DeleteView
 
-from .forms import PostForm
-from .models import Post, Category, Tag
+from .forms import PostForm, CommentForm
+from .models import Post, Category, Tag, Comment
 
 
 # Create your views here.
@@ -38,10 +38,14 @@ def category(request, slug):
 def detail(request, pk):
     post = Post.objects.get(pk=pk)
     categories = Category.objects.all()
+    comments = Comment.objects.filter(post=post)
+    commentform = CommentForm()
     return render(request,
                   'blog/detail.html',
                   context={'post':post,
-                           'categories':categories
+                           'categories':categories,
+                           'comments':comments,
+                           'commentform':commentform
                            })
 #/blog/create/
 def create(request):
@@ -102,3 +106,35 @@ def tag(request,slug):
                   context={'posts':posts,
                            'categories':categories})
 
+def createcomment(request,pk):
+    post = Post.objects.get(pk=pk)
+    if request.method == "POST":
+        commentform = CommentForm(request.POST)
+        if commentform.is_valid():
+            comment = commentform.save(commit=False)
+            comment.post = post
+            comment.save()
+            return redirect(post.get_absolute_url())
+    return redirect(post.get_absolute_url())
+
+def updatecomment(request,pk):
+    comment = Comment.objects.get(pk=pk)
+    post = comment.post
+    if request.method == "POST":
+        commentform = CommentForm(request.POST)
+        if commentform.is_valid():
+            comment1 = commentform.save(commit=False)
+            comment1.post = post
+            comment1.save()
+            return redirect(post.get_absolute_url())
+    else:
+        commentform = CommentForm(instance=comment)
+    return render(request,
+                  template_name='blog/commentform.html',
+                  context={'commentform':commentform,})
+
+def deletecomment(request,pk):
+    comment = Comment.objects.get(pk=pk)
+    post = comment.post
+    comment.delete()
+    return redirect(post.get_absolute_url())
