@@ -22,7 +22,7 @@ def index(request):
 def category(request, slug):
     categories = Category.objects.all()
     if slug=='no_category':
-        #미분류인경우ㅠ
+        #미분류인경우
         posts= Post.objects.filter(category=None)
     else: # 맛집, 용산구
         category = Category.objects.get(slug=slug)

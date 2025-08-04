@@ -104,3 +104,30 @@ path('/blog/',
 {% endblock %}
 7) 다른 html 포함하기
 {% include 'blog/footer.html' %}
+
+<django에서 database 접근하기>
+python manage.py shell
+pip install django_extensions
+python manage.py shell_plus
+
+from blog.models import Post
+Post.objects.all() -> 전체 가져오기
+# 조건을 주어 가져오기
+Post.objects.filter(pk=1)
+# 조건을 주어 가져온 후에 삭제하기
+post = Post.objects.filter(title="1번포스트제목")
+post.delete()
+# 새로 입력하기,저장하기
+post = Post()
+post.title="shell에서 만든 post"
+post.content = "shell에서 만든 post의 content"
+post.author = User.objects.get(username='user3')
+post.category = Category.objects.get(name='맛집')
+post.uploaded_image = 'images/cat.jpg'
+post.save()
+# 특정 post를 업데이트하기
+1. 조건으로 찾아온다. ->
+2. 해당하는 content를 수정
+3. save
+
+
