@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    도서관 2호점입니다.
+    책 등록하고, 책 리스트를 볼수 있습니다.
+    DRF를 사용합니다.
+
+    <script>
+        // CSRF 토큰 가져오기 함수
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // 쿠키 이름 찾기
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+
+
+
+
+        function getBookList(){
+            $.ajax({
+                url:"{% url 'libraryAPI2' %}",
+                type:"get",
+                success: function(data){
+                    let list = data;
+                    $(list).each(function(){
+
+                        console.log(this);
+
+                        let str = '';
+                        str += '<hr>';
+                        str += this.title;
+
+                        $('#bookList').append(str);
+                    })
+
+                    console.log('getBookList 성공')
+                    alert('성공');
+                },
+                error: function(){
+                    console.log('getBookList 실패함')
+                    alert('실패');
+                },
+            });
+        }
+
+        $(document).ready(function(){
+            $('#bookAddBtn').click(function(){
+                const bookData = {
+                    title: $('#title').val(),
+                    author: $('#author').val(),
+                    category: $('#category').val(),
+                    pages: parseInt($('#pages').val()),
+                    price: parseInt($('#price').val()),
+                    published_date: $('#published_date').val(),
+                    description: $('#description').val()
+                }
+                $.ajax({
+                        url: "{% url 'libraryAPI2' %}",
+                        type: "POST",
+                        contentType: 'application/json',
+                        headers: { 'X-CSRFToken': csrftoken },
+                        data: JSON.stringify(bookData),
+                        success: function (data) {
+                            alert("글등록 성공");
+                            console.log(bookData);
+                            alert("글등록 성공");
+                            getBookList();
+                            $('#result').html('<p style="color:green;">✅ 책이 성공적으로 등록되었습니다!</p>');
+                            $('#book-form')[0].reset();
+                        },
+                        error: function (xhr) {
+                            alert("글등록 오류")
+                            console.log(bookData)
+                            $('#result').html('<p style="color:red;">❌ 오류: ' + JSON.stringify(xhr.responseJSON) + '</p>');
+
+                        },
+                    }
+                )
+
+            });
+            })
+        $(document).ready(function() {
+            getBookList();
+        })
+
+
+    </script>
+    <form id="book-form">
+        <input type="text" id="title" placeholder="title" required><br>
+        <input type="text" id="author" placeholder ="저자" required><br>
+        <input type="text" id="category" placeholder="카테고리" required><br>
+        <input type="number" id="price" placeholder="가격" required><br>
+        <input type="number" id="pages" placeholder="페이지" required><br>
+        <input type="date" id="published_date" placeholder="출판일" required><br>
+        <textarea type="text" id="description" placeholder="설명" required></textarea>
+        <input type="submit" id="bookAddBtn">
+    </form>
+    <div id="result"></div>
+    <div id="bookList"></div>
+
+</body>
+</html>
