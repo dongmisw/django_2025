@@ -11,6 +11,23 @@
     http://localhost:8000/example/
     첫페이지입니다.
     <script>
+          // CSRF 토큰 가져오기 함수
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // 쿠키 이름 찾기
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
 
         $(document).ready(function(){
                 getPostList();
@@ -48,10 +65,51 @@
 
         }
 
+        $(document).ready(function(){
+            $('#postAddBtn').click(function(){
+                const post = {
+                    title : $('#title').val(),
+                    author: $('#author').val(),
+                    content: $('#content').val()
+                };
+                $.ajax({
+                    url:"{% url 'blogAPI' %}",
+                    type:"POST",
+                    contentType: 'application/json',
+                    data: JSON.stringify(post),
+                    headers:{'X-CSRFToken': csrftoken},
+                    success:function(data){
+                        console.log(data)
+                        alert("새글성공")
+                    },
+                    error:function(xhr){
+                        console.log(JSON.stringify(xhr.responseJSON))
+                        alert("새글작성실패")
+                    }
+                })
+
+
+
+
+            });
+        })
+
+
 
     </script>
 
-    <h1>글 목록입니다.</h1>
+    <h3>새글작성</h3>
+    작성 화면, 버튼
+    <form id="postform">
+        <input type="text" id="title" placeholder="title" required><br>
+        <input type="text" id="author" placeholder="author" required><br>
+        <input type="text" id="content" placeholder="content" required><br>
+        <input type="submit" id="postAddBtn">
+    </form>
+
+    <div id="result"></div>
+
+    <h3>글 목록입니다.</h3>
     <div id="postList">  </div>
 
 
