@@ -3,9 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
 </head>
 <body>
- http://localhost:8000/example/
-첫페이지입니다.
+    http://localhost:8000/example/
+    첫페이지입니다.
+    <script>
+
+        $(document).ready(function(){
+                getPostList();
+        })
+
+        function getPostList(){
+            $.ajax(
+                {
+                    url     :   "{% url 'blogAPI' %}",
+                    type    :   "GET",
+                    success :   function(data){
+                        console.log(data);
+                        let list = data;
+                        $(list).each(function(){
+                            console.log(this)
+                            console.log("=====")
+                            let str ='';
+                            str += '<hr>';
+                            str += '<div>';
+                            str += this.title + " &nbsp;&nbsp;&nbsp;";
+                            str += this.author + "&nbsp;&nbsp;&nbsp;";
+                            str += this.content + "&nbsp;&nbsp;&nbsp;";
+                            str += '</div>';
+                            $('#postList').append(str);
+
+                        })
+                         alert("전체글 성공");
+                    },
+                    error   :   function(){
+                        console.log('전체글 가져오기 실패')
+                        alert('전체글 실패');
+                    }
+                }
+            )
+
+        }
+
+
+    </script>
+
+    <h1>글 목록입니다.</h1>
+    <div id="postList">  </div>
+
+
 </body>
 </html>

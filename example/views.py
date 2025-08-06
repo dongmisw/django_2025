@@ -2,18 +2,36 @@ from django.shortcuts import render, redirect
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
-
+from django.shortcuts import get_object_or_404
 from blog.models import Post
 from example.serializers import PostSerializer
 
 
 #http://localhost:8000/example/postAPI/3
-@api_view(['GET'])
+@api_view(['GET','DELETE', 'PUT'])
 def postAPI(request,pk):
-    post = Post.objects.get(pk=pk)
-    postSerializer = PostSerializer(post) #Post object -> json 바꿔야함. serializers.py
-    return Response(postSerializer.data,
-                    status=status.HTTP_200_OK)
+    if request.method == 'GET':
+        post = Post.objects.get(pk=pk)
+        postSerializer = PostSerializer(post) #Post object -> json 바꿔야함. serializers.py
+        return Response(postSerializer.data,
+                        status=status.HTTP_200_OK)
+    elif request.method == 'DELETE':
+        post = Post.objects.get(pk=pk)
+        post.delete()
+        return Response("delete completed", status=status.HTTP_204_NO_CONTENT)
+    else: # request.method == 'PUT'  수정하는 경우
+        #post = Post.objects.get(pk=pk)
+        post = get_object_or_404(Post, pk=pk)
+        postSerializer = PostSerializer(post, data=request.data)
+        if postSerializer.is_valid():
+            postSerializer.save()
+            return Response(postSerializer.data,
+                            status=status.HTTP_200_OK)
+    return Response(postSerializer.errors,
+                        status=status.HTTP_400_BAD_REQUEST)
+
+
+
 
 @api_view(['GET', 'POST'])
 def blogAPI(request):
@@ -28,7 +46,6 @@ def blogAPI(request):
             postSerializer.save()
             return Response(postSerializer.data,
                             status = status.HTTP_201_CREATED)
-
     return Response(postSerializer.errors,
                     status = status.HTTP_400_BAD_REQUEST)
        #새로운 글 create 해준다.
