@@ -12,28 +12,29 @@
     첫페이지입니다.
     <script>
           // CSRF 토큰 가져오기 함수
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                // 쿠키 이름 찾기
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // 쿠키 이름 찾기
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
                 }
             }
+            return cookieValue;
         }
-        return cookieValue;
-    }
-    const csrftoken = getCookie('csrftoken');
+        const csrftoken = getCookie('csrftoken');
 
         $(document).ready(function(){
                 getPostList();
         })
 
         function getPostList(){
+            $('#postList').empty();
             $.ajax(
                 {
                     url     :   "{% url 'blogAPI' %}",
@@ -80,17 +81,16 @@
                     headers:{'X-CSRFToken': csrftoken},
                     success:function(data){
                         console.log(data)
-                        alert("새글성공")
+                        $('#title').val('')
+                        $('#content').val('')
+                        $('#author').val('')
+                        getPostList();
                     },
                     error:function(xhr){
                         console.log(JSON.stringify(xhr.responseJSON))
                         alert("새글작성실패")
                     }
-                })
-
-
-
-
+                });
             });
         })
 
@@ -100,11 +100,12 @@
 
     <h3>새글작성</h3>
     작성 화면, 버튼
+
     <form id="postform">
         <input type="text" id="title" placeholder="title" required><br>
         <input type="text" id="author" placeholder="author" required><br>
         <input type="text" id="content" placeholder="content" required><br>
-        <input type="submit" id="postAddBtn">
+        <input type="button" id="postAddBtn" value="새글작성하기">
     </form>
 
     <div id="result"></div>
