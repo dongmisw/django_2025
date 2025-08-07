@@ -17,7 +17,7 @@
             {% else %}
                 <h5 class="card-title">카테고리 : 미분류 </h5>
             {% endif %}
-            <p class="card-text"> {{ post.content }}</p>
+            <p class="card-text"> {{ post.get_content_markdown | safe }}</p>
             <a class="btn btn-primary" href={{ post.get_absolute_url }}>Read more →</a>
         </div>
     </div>

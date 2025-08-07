@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.views.generic import DetailView, ListView,CreateView,UpdateView,DeleteView
 
@@ -35,6 +36,8 @@ def category(request, slug):
                            }
                   )
 
+
+@login_required(login_url='/accounts/google/login/')
 def detail(request, pk):
     post = Post.objects.get(pk=pk)
     categories = Category.objects.all()
@@ -48,6 +51,7 @@ def detail(request, pk):
                            'commentform':commentform
                            })
 #/blog/create/
+@login_required(login_url='/accounts/google/login/')
 def create(request):
 
     categories = Category.objects.all()
@@ -57,7 +61,8 @@ def create(request):
         postform = PostForm(request.POST, request.FILES)
         if postform.is_valid():
             post1 = postform.save(commit=False)
-            post1.title = post1.title + "홍길동 만세"
+            #post1.title = post1.title+'홍길동'
+            post1.author = request.user
             post1.save()
             return redirect('/blog/')
             #정상값인 경우
@@ -79,11 +84,13 @@ def createfake(request):
     return redirect('index')
 
 #/blog/<int:pk>/delete
+@login_required(login_url='/accounts/google/login/')
 def delete(request,pk):
     post = Post.objects.get(pk=pk)
     post.delete()
     return redirect('index')
 #/blog/<int:pk>/update  -> pk는 post.pk
+@login_required(login_url='/accounts/google/login/')
 def update(request,pk):
     post = Post.objects.get(pk=pk)
     if request.method == "POST":
@@ -106,6 +113,7 @@ def tag(request,slug):
                   context={'posts':posts,
                            'categories':categories})
 
+@login_required(login_url='/accounts/google/login/')
 def createcomment(request,pk):
     post = Post.objects.get(pk=pk)
     if request.method == "POST":
@@ -113,10 +121,12 @@ def createcomment(request,pk):
         if commentform.is_valid():
             comment = commentform.save(commit=False)
             comment.post = post
+            comment.author = request.user
             comment.save()
             return redirect(post.get_absolute_url())
     return redirect(post.get_absolute_url())
 
+@login_required(login_url='/accounts/google/login/')
 def updatecomment(request,pk):
     comment = Comment.objects.get(pk=pk)
     post = comment.post
@@ -133,6 +143,7 @@ def updatecomment(request,pk):
                   template_name='blog/commentform.html',
                   context={'commentform':commentform,})
 
+@login_required(login_url='/accounts/google/login/')
 def deletecomment(request,pk):
     comment = Comment.objects.get(pk=pk)
     post = comment.post
