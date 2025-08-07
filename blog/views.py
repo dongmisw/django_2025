@@ -1,9 +1,60 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import (LoginRequiredMixin,
+                                        UserPassesTestMixin)
 from django.shortcuts import render, redirect
-from django.views.generic import DetailView, ListView,CreateView,UpdateView,DeleteView
-
+from django.views.generic import (ListView,
+                                  CreateView,
+                                  DetailView,
+                                  UpdateView,
+                                  DeleteView)
 from .forms import PostForm, CommentForm
 from .models import Post, Category, Tag, Comment
+
+class PostDeleteView(LoginRequiredMixin,
+                     UserPassesTestMixin,
+                     DeleteView):
+    model = Post
+    success_url = '/blog/'
+    #template_name = 'post_confirm_delete.html'
+    def test_func(self):
+        post = self.get_object()
+        return post.author == self.request.user
+
+class PostUpdateView(UpdateView):
+    model = Post
+    fields = ['title','content','category',
+              'uploaded_image','uploaded_file']
+    #template_name = 'blog/post_form.html'
+
+class PostDetailView(DetailView):
+    model = Post
+    # template_name = '/blog/post_detail.html'
+
+class PostCreateView(LoginRequiredMixin, CreateView):
+    model = Post
+    fields = ['title','content','category',
+              'uploaded_image','uploaded_file']
+
+    # template_name = 'blog/post_form.html'
+    def form_valid(self, form):
+        current_user = self.request.user
+        if current_user.is_authenticated:
+            form.instance.author = current_user
+            return super(PostCreateView, self).form_valid(form)
+        else:
+            return redirect('/blog/')
+        #super.form_valid()
+    #post_form.html
+
+class PostListView(ListView):
+    model = Post
+    ordering = '-pk'
+
+    #template_name = '/blog/post_list.html'
+    # context -> post들  -> post_list
+    #모델명에 따라서 대문자->소문자_list
+    # Comment --> comment_list
+
 
 
 # Create your views here.
@@ -11,11 +62,11 @@ from .models import Post, Category, Tag, Comment
 #함수 생성
 def index(request):
     #db에서 query - select * from post
-    posts1111 = Post.objects.all().order_by('-pk')
+    posts = Post.objects.all().order_by('-pk')
     categories = Category.objects.all()
     return render(request,
                   'blog/index.html',
-                  context={'posts' : posts1111,
+                  context={'posts' : posts,
                            'categories' :categories
                            }
                  )

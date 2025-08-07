@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+blog/post_form.html 여기입니다.
+action이 없으면, 동일한 url로 method="post"로 보냄
+action=/blog/create 인 경우에는 create가 새로 된다.
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit">
+    </form>
+</body>
+</html>

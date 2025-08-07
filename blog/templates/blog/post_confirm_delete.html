@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    삭제하시겠습니까.
+    /blog/<pk>/delete
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit">
+    </form>
+</body>
+</html>

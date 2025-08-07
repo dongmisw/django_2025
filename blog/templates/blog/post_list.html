@@ -1,0 +1,45 @@
+{% extends 'blog/base.html' %}
+{% block main-area %}
+    {% for post in post_list %}
+    <!-- Featured blog post-->
+    <div class="card mb-4">
+        {% if post.uploaded_image %}
+            <a href="#!"><img class="card-img-top" src={{ post.uploaded_image.url }} alt="..." /></a>
+        {% else %}
+            <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" alt="..." /></a>
+        {% endif %}
+        <div class="card-body">
+            <div class="small text-muted">{{ post.created_date }}</div>
+            <h2 class="card-title">{{ post.title }}</h2>
+            <h5 class="card-title">글쓴이 : {{ post.author }}</h5>
+            {% if post.category %}
+                <h5 class="card-title">카테고리 : {{ post.category.name }}</h5>
+            {% else %}
+                <h5 class="card-title">카테고리 : 미분류 </h5>
+            {% endif %}
+            <p class="card-text"> {{ post.get_content_markdown | safe }}</p>
+            <a class="btn btn-primary" href={{ post.get_absolute_url }}>Read more →</a>
+        </div>
+    </div>
+    {% endfor %}
+    <!-- Nested row for non-featured blog posts-->
+
+    <!-- Pagination-->
+    <nav aria-label="Pagination">
+        <hr class="my-0" />
+        <ul class="pagination justify-content-center my-4">
+            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
+            <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
+            <li class="page-item"><a class="page-link" href="#!">2</a></li>
+            <li class="page-item"><a class="page-link" href="#!">3</a></li>
+            <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
+            <li class="page-item"><a class="page-link" href="#!">15</a></li>
+            <li class="page-item"><a class="page-link" href="#!">Older</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block header %}
+    <h1 class="fw-bolder">Welcome to Blog Home!</h1>
+    <p class="lead mb-0">A Bootstrap 5 starter layout for your next blog homepage</p>
+{% endblock %}
