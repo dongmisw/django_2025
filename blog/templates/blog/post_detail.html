@@ -1,4 +1,5 @@
 {% extends 'blog/base.html' %}
+{% load static %}
 {% block main-area %}
     <!-- Post content-->
     <article>
@@ -41,6 +42,7 @@
         </header>
         <!-- Preview image figure-->
         <figure class="mb-4">
+        {# <img src="{% static 'archi.jpg' %}/"> #}
             {% if post.uploaded_image %}
                 <img class="img-fluid rounded"
                  src={{ post.uploaded_image.url }} alt="..." />

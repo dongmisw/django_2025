@@ -29,6 +29,11 @@ class PostUpdateView(UpdateView):
 class PostDetailView(DetailView):
     model = Post
     # template_name = '/blog/post_detail.html'
+    def get_context_data(self, **kwargs):
+        context = super(PostDetailView, self).get_context_data(**kwargs)
+        context['comments'] = Comment.objects.filter(post=self.get_object())
+        context['commentform'] = CommentForm()
+        return context
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
@@ -43,12 +48,17 @@ class PostCreateView(LoginRequiredMixin, CreateView):
             return super(PostCreateView, self).form_valid(form)
         else:
             return redirect('/blog/')
+
         #super.form_valid()
     #post_form.html
 
 class PostListView(ListView):
     model = Post
     ordering = '-pk'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(PostListView, self).get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
     #template_name = '/blog/post_list.html'
     # context -> post들  -> post_list
